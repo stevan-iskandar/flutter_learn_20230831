@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn_20230831/src/api/master/api_grocery.dart';
 import 'package:flutter_learn_20230831/src/models/grocery_item.dart';
 import 'package:flutter_learn_20230831/src/screens/new_item_screen.dart';
 
@@ -11,6 +12,17 @@ class GroceryListScreen extends StatefulWidget {
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
   final List<GroceryItem> _groceryItems = [];
+
+  Future<Null> getGroceries() async {
+    final response = await const ApiGrocery().dataTable();
+    print(response.body);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getGroceries();
+  }
 
   void _addItem() async {
     final newItem = await Navigator.of(context).push<GroceryItem>(

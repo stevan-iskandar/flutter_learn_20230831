@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_learn_20230831/src/constants/env.dart';
-import 'package:flutter_learn_20230831/src/screens/grocery_list_screen.dart';
+import 'package:flutter_learn_20230831/src/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       darkTheme: theme(brightness: Brightness.dark),
       debugShowCheckedModeBanner:
           dotenv.env[Env.debug]?.toLowerCase() == 'true',
-      home: const GroceryListScreen(),
+      home: const LoginScreen(),
     );
   }
 }

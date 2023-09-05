@@ -1,5 +1,9 @@
-import 'package:flutter_learn_20230831/src/api/api.dart';
+import 'package:flutter_learn_20230831/src/api/base_api.dart';
 
-class ApiGrocery extends Api {
-  ApiGrocery() : super(url: 'grocery');
+class ApiGrocery extends BaseApi {
+  const ApiGrocery() : super(url: 'grocery');
+
+  dataTable() async {
+    return super.get('$url/');
+  }
 }

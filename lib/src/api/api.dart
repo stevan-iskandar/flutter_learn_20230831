@@ -1,14 +1,16 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_learn_20230831/src/constants/env.dart';
+import 'package:flutter_learn_20230831/src/constants/storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  Api({this.url});
+  const Api();
 
-  final String? url;
-
-  Uri _uri({Map<String, dynamic>? params}) {
+  Uri _uri(
+    String url, {
+    Map<String, dynamic>? params,
+  }) {
     return Uri(
       scheme: dotenv.env[Env.apiScheme],
       host: dotenv.env[Env.apiHost],
@@ -20,7 +22,7 @@ class Api {
 
   Future<Map<String, String>> _headers() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    final String? token = prefs.getString(Storage.token);
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -43,6 +45,7 @@ class Api {
   }) async {
     return http.get(
       _uri(
+        url,
         params: params,
       ),
       headers: await _headers(),
@@ -56,10 +59,57 @@ class Api {
   }) async {
     return http.post(
       _uri(
+        url,
         params: params,
       ),
       headers: await _headers(),
       body: body,
     );
+  }
+
+  Future<http.Response> put(
+    String url, {
+    Map<String, dynamic>? params,
+    Object? body,
+  }) async {
+    return http.put(
+      _uri(
+        url,
+        params: params,
+      ),
+      headers: await _headers(),
+      body: body,
+    );
+  }
+
+  Future<http.Response> delete(
+    String url, {
+    Map<String, dynamic>? params,
+    Object? body,
+  }) async {
+    return http.delete(
+      _uri(
+        url,
+        params: params,
+      ),
+      headers: await _headers(),
+      body: body,
+    );
+  }
+
+  Future<http.StreamedResponse> multipart(
+    String url, {
+    Map<String, dynamic>? params,
+    Object? body,
+  }) {
+    var request = http.MultipartRequest(
+      'POST',
+      _uri(
+        url,
+        params: params,
+      ),
+    );
+
+    return request.send();
   }
 }
